@@ -1,6 +1,6 @@
 ﻿#    P5StrikersFix-AI-Fork
 
-> [!WARNING]
+[!WARNING]
 
 > This solution did not end up working. Text boxes still had a very aliased apperence. My solution ended up being to try and optimize the Reshade NN-Shaders.
 
