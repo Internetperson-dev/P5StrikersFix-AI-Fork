@@ -1,34 +1,8 @@
-﻿# Persona 5 Strikers Fix
-[![Patreon-Button](.forgejo/images/Patreon-Button.png)](https://www.patreon.com/Wintermance) [![ko-fi](.forgejo/images/Kofi-Button.svg)](https://ko-fi.com/W7W01UAI9)
+﻿#    P5StrikersFix-AI-Fork
 
-This is a fix that adds custom resolutions, ultrawide support and more to Persona 5 Strikers.
+This is a fork of BLANK that tries and separate the HUD and game resolution scaling.
 
-## Features
-
-### General
-- Custom resolution support.
-- Skip intro logos.
-- Gameplay FOV adjustment.
-- Option to disable cutscene letterboxing.
-- Shadow resolution setting.
-- Ability to scale up resolution of UI render targets, optionally to an explicit resolution (e.g. 1080p game + 4K HUD).
-- Fix 8-way analog movement.
-
-### Ultrawide/narrower
-- Ultrawide/narrow aspect ratio support.
-- Correct FOV at any aspect ratio.
-- HUD is scaled to 16:9.
-
-## Installation
-- Grab the latest release of P5StrikersFix from [here.](../../../releases)
-- Extract the contents of the release zip in to the the game folder. e.g. "**steamapps\common\P5S**" for Steam).
-
-### Steam Deck/Linux Additional Instructions
-🚩**You do not need to do this if you are using Windows!**
-- Open up the game properties in Steam and add `WINEDLLOVERRIDES="dinput8=n,b" %command%` to the launch options.
-
-## Configuration
-- See **P5StrikersFix.ini** to adjust settings for the fix.
+The idea is you can play the game at 70% of 1080P with upscaling while having a sharp 4K HUD.
 
 ## Known Issues
 Please report any issues you see.
