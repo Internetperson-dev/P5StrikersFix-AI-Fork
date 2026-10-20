@@ -33,17 +33,32 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $Version = (Select-String -Path 'src/dllmain.cpp' -Pattern 'sFixVer\s*=\s*"([^"]+)"').Matches.Groups[1].Value
           Write-Host "Packaging version $Version"
+          
+          # Clean up tmp directory
           Remove-Item -Recurse -Force tmp -ErrorAction SilentlyContinue
-          New-Item -ItemType Directory -Path 'tmp/scripts' -Force | Out-Null
-          Copy-Item 'build/windows/x64/release/*.asi' -Destination 'tmp/scripts/'
-          Copy-Item '*.ini' -Destination 'tmp/scripts/'
+          New-Item -ItemType Directory -Path 'tmp' -Force | Out-Null
+          
+          # Copy .asi and .ini files directly to the root of tmp
+          Copy-Item 'build/windows/x64/release/*.asi' -Destination 'tmp/'
+          Copy-Item '*.ini' -Destination 'tmp/' -ErrorAction SilentlyContinue
+          
+          # Download and extract Ultimate-ASI-Loader
           Invoke-WebRequest -Uri 'https://github.com/ThirteenAG/Ultimate-ASI-Loader/releases/download/v9.7.0/Ultimate-ASI-Loader_x64.zip' -OutFile 'asi-loader.zip'
-          Expand-Archive -Force 'asi-loader.zip' -DestinationPath 'tmp'
-          if (-not (Test-Path 'tmp/dinput8.dll')) {
-            Get-ChildItem 'tmp' -Recurse -Filter 'dinput8.dll' | Select-Object -First 1 | Move-Item -Destination 'tmp/dinput8.dll'
+          Expand-Archive -Force 'asi-loader.zip' -DestinationPath 'asi-loader-extracted'
+          
+          # Find and move dinput8.dll to the root of tmp
+          $DInput8 = Get-ChildItem 'asi-loader-extracted' -Recurse -Filter 'dinput8.dll' | Select-Object -First 1
+          if ($DInput8) {
+            Move-Item $DInput8.FullName -Destination 'tmp/dinput8.dll'
+          } else {
+            throw "dinput8.dll not found in the downloaded archive."
           }
+          
+          # Compress the contents of tmp directly into the zip archive
           Compress-Archive -Path 'tmp/*' -DestinationPath "P5StrikersFix_$Version.zip" -Force
-          Remove-Item -Recurse -Force tmp, asi-loader.zip
+          
+          # Cleanup
+          Remove-Item -Recurse -Force tmp, asi-loader-extracted, asi-loader.zip
           Get-Item "P5StrikersFix_$Version.zip"
 
       - name: Upload artifact
