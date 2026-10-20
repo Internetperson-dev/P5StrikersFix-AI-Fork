@@ -1,5 +1,14 @@
 ﻿#    P5StrikersFix-AI-Fork
 
+> [!WARNING]
+
+> This solution did not end up working. Text boxes still had a very aliased apperence. My solution ended up being to try and optimize the Reshade NN-Shaders.
+
+> This is not a perfect solution and still >produces some artifacts, but does look better than stock. The SMAA in the Luma-Framework modficiation does not seem to impact the HUD.
+
+> For code perspective, it will be archived.
+
+
 This is a fork of [Lyall's P5StrikersFix](https://codeberg.org/Lyall/P5StrikersFix) modification that tries and separate the HUD and game resolution scaling.
 
 The idea is you can play the game at 70% of 1080P with upscaling while having a sharp 4K HUD.
