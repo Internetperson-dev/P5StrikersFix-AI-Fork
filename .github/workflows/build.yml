@@ -1,0 +1,72 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+
+      - name: Configure
+        run: xmake f -p windows -a x64 -m release -y
+
+      - name: Build
+        run: xmake build -v
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Version = (Select-String -Path 'src/dllmain.cpp' -Pattern 'sFixVer\s*=\s*"([^"]+)"').Matches.Groups[1].Value
+          Write-Host "Packaging version $Version"
+          Remove-Item -Recurse -Force tmp -ErrorAction SilentlyContinue
+          New-Item -ItemType Directory -Path 'tmp/scripts' -Force | Out-Null
+          Copy-Item 'build/windows/x64/release/*.asi' -Destination 'tmp/scripts/'
+          Copy-Item '*.ini' -Destination 'tmp/scripts/'
+          Invoke-WebRequest -Uri 'https://github.com/ThirteenAG/Ultimate-ASI-Loader/releases/download/v9.7.0/Ultimate-ASI-Loader_x64.zip' -OutFile 'asi-loader.zip'
+          Expand-Archive -Force 'asi-loader.zip' -DestinationPath 'tmp'
+          if (-not (Test-Path 'tmp/dinput8.dll')) {
+            Get-ChildItem 'tmp' -Recurse -Filter 'dinput8.dll' | Select-Object -First 1 | Move-Item -Destination 'tmp/dinput8.dll'
+          }
+          Compress-Archive -Path 'tmp/*' -DestinationPath "P5StrikersFix_$Version.zip" -Force
+          Remove-Item -Recurse -Force tmp, asi-loader.zip
+          Get-Item "P5StrikersFix_$Version.zip"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: P5StrikersFix
+          path: P5StrikersFix_*.zip
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: P5StrikersFix
+          path: dist
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip
+          generate_release_notes: true

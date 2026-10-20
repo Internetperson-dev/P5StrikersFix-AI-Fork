@@ -1,0 +1,35 @@
+{
+  "ModId": "p5s.essentials.P5StrikersFix",
+  "ModName": "P5StrikersFix",
+  "ModAuthor": "Lyall",
+  "ModVersion": "<REPLACE_VERSION>",
+  "ModDescription": "A fix that adds ultrawide/narrower support, an intro skip and more to Persona 5 Royal. Edit \u0060P5StrikersFix.ini\u0060 in Mod Folder to configure settings.",
+  "ModDll": "",
+  "ModIcon": "",
+  "ModR2RManagedDll32": "",
+  "ModR2RManagedDll64": "",
+  "ModNativeDll32": "",
+  "ModNativeDll64": "P5StrikersFix.asi",
+  "Tags": [],
+  "CanUnload": null,
+  "HasExports": null,
+  "IsLibrary": false,
+  "ReleaseMetadataFileName": "p5s.essentials.P5StrikersFix.ReleaseMetadata.json",
+  "IgnoreRegexes": [
+    ".*\\.json",
+    "p5s\\.essentials\\.P5StrikersFix\\.nuspec"
+  ],
+  "IncludeRegexes": [
+    "\\.deps\\.json",
+    "\\.runtimeconfig\\.json",
+    "ModConfig\\.json"
+  ],
+  "PluginData": {},
+  "IsUniversalMod": false,
+  "ModDependencies": [],
+  "OptionalDependencies": [],
+  "SupportedAppId": [
+    "P5R.exe"
+  ],
+  "ProjectUrl": "https://codeberg.org/Lyall/P5StrikersFix"
+}
