@@ -1,6 +1,6 @@
 ﻿#    P5StrikersFix-AI-Fork
 
-This is a fork of BLANK that tries and separate the HUD and game resolution scaling.
+This is a fork of [Lyall's P5StrikersFix](https://codeberg.org/Lyall/P5StrikersFix) modification that tries and separate the HUD and game resolution scaling.
 
 The idea is you can play the game at 70% of 1080P with upscaling while having a sharp 4K HUD.
 
